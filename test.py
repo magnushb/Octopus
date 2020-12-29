@@ -17,7 +17,7 @@ with serial.Serial('COM5') as ser:
     answ = ser.readline()
     print('Home position: ',answ)
     # Move to absolute position
-    ser.write(b'0PA20000'+b'\r\n')
+    ser.write(b'0PA30000'+b'\r\n')
     answ = ser.readline()
     print('Current position: ',answ)
     # Relative movement
