@@ -152,11 +152,15 @@ class Ui_MainWindow(object):
         self.pushButton_2.setText(_translate("MainWindow", "Horizontal"))
         self.pushButton_9.clicked.connect(self.move_to)
 
-    def get_position():
+    def get_position(self, MainWindow):
         """
         Query current position
         """
-        return 1038
+        ser.write(b'0PA?'+b'\r\n')
+        answ = ser.readline()
+        print('Current position read')
+
+        return answ
 
     def get_absolute_to_move(self, MainWindow):
         """
@@ -189,9 +193,10 @@ class Ui_MainWindow(object):
             #print('pos:',answ)
             # Get new position
             # Ask for current position
-            ser.write(b'0PA?'+b'\r\n')
-            answ = ser.readline()
-            print('Current position: ',answ)
+            #ser.write(b'0PA?'+b'\r\n')
+            #answ = ser.readline()
+            curr_pos = get_position()
+            print('Current position: ',curr_pos)
         
 
 
