@@ -12,7 +12,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import serial
 import numpy as np
 
-zero_pos = 201240 
+zero_pos = 201240
+horizontal_pos = 45
+vertical_pos = 90 
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -144,14 +146,22 @@ class Ui_MainWindow(object):
         self.label_4.setText(_translate("MainWindow", "Current position"))
         self.label_5.setText(_translate("MainWindow", "Polarizer controller"))
         self.pushButton_3.setText(_translate("MainWindow", "+"))
+        self.pushButton_3.clicked.connect(self.move_relative_1)
         self.pushButton_7.setText(_translate("MainWindow", "+"))
+        self.pushButton_7.clicked.connect(self.move_relative_2)
         self.pushButton_5.setText(_translate("MainWindow", "+"))
+        self.pushButton_5.clicked.connect(self.move_relative_3)
         self.pushButton_4.setText(_translate("MainWindow", "-"))
+        self.pushButton_4.clicked.connect(self.move_relative_1_neg)
         self.pushButton_8.setText(_translate("MainWindow", "-"))
+        self.pushButton_8.clicked.connect(self.move_relative_2_neg)
         self.pushButton_6.setText(_translate("MainWindow", "-"))
+        self.pushButton_6.clicked.connect(self.move_relative_3_neg)
         self.pushButton_9.setText(_translate("MainWindow", "Move"))
         self.pushButton.setText(_translate("MainWindow", "Vertical"))
+        self.pushButton.clicked.connect(self.move_to_vertical)
         self.pushButton_2.setText(_translate("MainWindow", "Horizontal"))
+        self.pushButton_2.clicked.connect(self.move_to_horizontal)
         self.pushButton_9.clicked.connect(self.move_to)
 
     def do_at_startup(self, MainWindow):
@@ -177,17 +187,170 @@ class Ui_MainWindow(object):
             self.lcdNumber.display(int(curr_pos[1])+zero_pos)
             # Set values for relative movements
             self.lineEdit.setText("1")
+            self.lineEdit.setAlignment(QtCore.Qt.AlignCenter)
             self.lineEdit_2.setText("5")
+            self.lineEdit_2.setAlignment(QtCore.Qt.AlignCenter)
             self.lineEdit_3.setText("10")
+            self.lineEdit_3.setAlignment(QtCore.Qt.AlignCenter)
 
 
 
-    def get_absolute_to_move(self, MainWindow):
+    def move_relative_1(self, MainWindow):
         """
-        Get value for absolute movement from user input field.
+        Move with the number of steps given in input box 1 relative the current position.
         """
-        #self.lineEdit_4.text()
-    
+        with serial.Serial('COM5') as ser:
+            ser.baudrate = 19200
+            ser.bytesize = 8
+            ser.parity = 'N'
+            ser.xonxoff = 1
+            ser.rtscts = 1
+            ser.timeout = 5
+        
+            # Get step size
+            to_move = self.lineEdit.text()
+            # Construnct command
+            move_string = bytes('0PR{}'.format(to_move),'utf-8')
+            # Move
+            ser.write(move_string+b'\r\n')
+            answ = ser.readline()
+            # Ask for current position
+            ser.write(b'0PA?'+b'\r\n')
+            answ = ser.readline()
+            curr_pos = answ.decode('utf-8').split()[1]
+            # Update LCD display
+            self.lcdNumber.display(int(curr_pos)+zero_pos)
+
+    def move_relative_1_neg(self, MainWindow):
+        """
+        Move with the number of steps given in input box 1 relative the current position.
+        """
+        with serial.Serial('COM5') as ser:
+            ser.baudrate = 19200
+            ser.bytesize = 8
+            ser.parity = 'N'
+            ser.xonxoff = 1
+            ser.rtscts = 1
+            ser.timeout = 5
+        
+            # Get step size
+            to_move = self.lineEdit.text()
+            # Construnct command
+            move_string = bytes('0PR-{}'.format(to_move),'utf-8')
+            # Move
+            ser.write(move_string+b'\r\n')
+            answ = ser.readline()
+            # Ask for current position
+            ser.write(b'0PA?'+b'\r\n')
+            answ = ser.readline()
+            curr_pos = answ.decode('utf-8').split()[1]
+            # Update LCD display
+            self.lcdNumber.display(int(curr_pos)+zero_pos)
+
+    def move_relative_2(self, MainWindow):
+        """
+        Move with the number of steps given in input box 1 relative the current position.
+        """
+        with serial.Serial('COM5') as ser:
+            ser.baudrate = 19200
+            ser.bytesize = 8
+            ser.parity = 'N'
+            ser.xonxoff = 1
+            ser.rtscts = 1
+            ser.timeout = 5
+        
+            # Get step size
+            to_move = self.lineEdit_2.text()
+            # Construnct command
+            move_string = bytes('0PR{}'.format(to_move),'utf-8')
+            # Move
+            ser.write(move_string+b'\r\n')
+            answ = ser.readline()
+            # Ask for current position
+            ser.write(b'0PA?'+b'\r\n')
+            answ = ser.readline()
+            curr_pos = answ.decode('utf-8').split()[1]
+            # Update LCD display
+            self.lcdNumber.display(int(curr_pos)+zero_pos)
+
+    def move_relative_2_neg(self, MainWindow):
+        """
+        Move with the number of steps given in input box 1 relative the current position.
+        """
+        with serial.Serial('COM5') as ser:
+            ser.baudrate = 19200
+            ser.bytesize = 8
+            ser.parity = 'N'
+            ser.xonxoff = 1
+            ser.rtscts = 1
+            ser.timeout = 5
+        
+            # Get step size
+            to_move = self.lineEdit_2.text()
+            # Construnct command
+            move_string = bytes('0PR-{}'.format(to_move),'utf-8')
+            # Move
+            ser.write(move_string+b'\r\n')
+            answ = ser.readline()
+            # Ask for current position
+            ser.write(b'0PA?'+b'\r\n')
+            answ = ser.readline()
+            curr_pos = answ.decode('utf-8').split()[1]
+            # Update LCD display
+            self.lcdNumber.display(int(curr_pos)+zero_pos)
+
+    def move_relative_3(self, MainWindow):
+        """
+        Move with the number of steps given in input box 1 relative the current position.
+        """
+        with serial.Serial('COM5') as ser:
+            ser.baudrate = 19200
+            ser.bytesize = 8
+            ser.parity = 'N'
+            ser.xonxoff = 1
+            ser.rtscts = 1
+            ser.timeout = 5
+        
+            # Get step size
+            to_move = self.lineEdit_3.text()
+            # Construnct command
+            move_string = bytes('0PR{}'.format(to_move),'utf-8')
+            # Move
+            ser.write(move_string+b'\r\n')
+            answ = ser.readline()
+            # Ask for current position
+            ser.write(b'0PA?'+b'\r\n')
+            answ = ser.readline()
+            curr_pos = answ.decode('utf-8').split()[1]
+            # Update LCD display
+            self.lcdNumber.display(int(curr_pos)+zero_pos)
+
+    def move_relative_3_neg(self, MainWindow):
+        """
+        Move with the number of steps given in input box 1 relative the current position.
+        """
+        with serial.Serial('COM5') as ser:
+            ser.baudrate = 19200
+            ser.bytesize = 8
+            ser.parity = 'N'
+            ser.xonxoff = 1
+            ser.rtscts = 1
+            ser.timeout = 5
+        
+            # Get step size
+            to_move = self.lineEdit_3.text()
+            # Construnct command
+            move_string = bytes('0PR-{}'.format(to_move),'utf-8')
+            # Move
+            ser.write(move_string+b'\r\n')
+            answ = ser.readline()
+            # Ask for current position
+            ser.write(b'0PA?'+b'\r\n')
+            answ = ser.readline()
+            curr_pos = answ.decode('utf-8').split()[1]
+            # Update LCD display
+            self.lcdNumber.display(int(curr_pos)+zero_pos)
+
     def move_to(self, MainWindow):
         """
         Send command to move to absolute position
@@ -224,7 +387,53 @@ class Ui_MainWindow(object):
             # Update LDC display with current position
             self.lcdNumber.display(int(curr_pos[1])+zero_pos)
         
+    def move_to_vertical(self, MainWindow):
+        """
+        Send command to move to position of vertical polarization
+        """
+        # Initiate connection
+        with serial.Serial('COM5') as ser:
+            ser.baudrate = 19200
+            ser.bytesize = 8
+            ser.parity = 'N'
+            ser.xonxoff = 1
+            ser.rtscts = 1
+            ser.timeout = 5
+            
+            # Move
+            pos_string = bytes('0PA{}'.format(vertical_pos),'utf-8')
+            ser.write(pos_string+b'\r\n')
+            answ = ser.readline()
+            # Ask for current position
+            ser.write(b'0PA?'+b'\r\n')
+            answ = ser.readline()
+            curr_pos = answ.decode('utf-8').split()
+            # Update LDC display with current position
+            self.lcdNumber.display(int(curr_pos[1])+zero_pos)
 
+    def move_to_horizontal(self, MainWindow):
+        """
+        Send command to move to position of horizontal polarization
+        """
+        # Initiate connection
+        with serial.Serial('COM5') as ser:
+            ser.baudrate = 19200
+            ser.bytesize = 8
+            ser.parity = 'N'
+            ser.xonxoff = 1
+            ser.rtscts = 1
+            ser.timeout = 5
+            
+            # Move
+            pos_string = bytes('0PA{}'.format(horizontal_pos),'utf-8')
+            ser.write(pos_string+b'\r\n')
+            answ = ser.readline()
+            # Ask for current position
+            ser.write(b'0PA?'+b'\r\n')
+            answ = ser.readline()
+            curr_pos = answ.decode('utf-8').split()
+            # Update LDC display with current position
+            self.lcdNumber.display(int(curr_pos[1])+zero_pos)
 
 
 
