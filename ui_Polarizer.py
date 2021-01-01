@@ -191,11 +191,12 @@ class Ui_MainWindow(object):
             ser.write(pos_string+b'\r\n')
             answ = ser.readline()
             #print('pos:',answ)
-            # Get new position
             # Ask for current position
             ser.write(b'0PA?'+b'\r\n')
             curr_pos = ser.readline()
             print('Current position: ',curr_pos)
+            # Update LDC display with current position
+            self.lcdNumber.display(curr_pos)
         
 
 
