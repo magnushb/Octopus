@@ -45,7 +45,6 @@ class Ui_MainWindow(object):
         self.lcdNumber = QtWidgets.QLCDNumber(8,self.centralwidget)
         self.lcdNumber.setGeometry(QtCore.QRect(470, 90, 250, 41))
         self.lcdNumber.setObjectName("lcdNumber")
-        self.lcdNumber.display(get_position_at_startup())
         self.label_5 = QtWidgets.QLabel(self.centralwidget)
         self.label_5.setGeometry(QtCore.QRect(20, 10, 301, 41))
         font = QtGui.QFont()
@@ -133,6 +132,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        self.lcdNumber.display(self.get_position_at_startup)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -173,9 +173,9 @@ class Ui_MainWindow(object):
             print('Current position: ',curr_pos)
             # Update LDC display with current position
             #self.lcdNumber.display(
-            return int(curr_pos[1])+201240
+            
+        return int(curr_pos[1])+201240
 
-        return answ
 
     def get_absolute_to_move(self, MainWindow):
         """
