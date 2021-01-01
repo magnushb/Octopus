@@ -156,9 +156,9 @@ class Ui_MainWindow(object):
         """
         Query current position
         """
-        ser.write(b'0PA?'+b'\r\n')
-        answ = ser.readline()
-        print('Current position read')
+        #ser.write(b'0PA?'+b'\r\n')
+        #answ = ser.readline()
+        #print('Current position read')
 
         return answ
 
@@ -193,9 +193,8 @@ class Ui_MainWindow(object):
             #print('pos:',answ)
             # Get new position
             # Ask for current position
-            #ser.write(b'0PA?'+b'\r\n')
-            #answ = ser.readline()
-            curr_pos = get_position()
+            ser.write(b'0PA?'+b'\r\n')
+            curr_pos = ser.readline()
             print('Current position: ',curr_pos)
         
 
