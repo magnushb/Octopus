@@ -12,6 +12,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import serial
 import numpy as np
 
+zero_pos = 201240 
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -132,7 +134,6 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-        self.lcdNumber.display(self.get_position_at_startup)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -172,9 +173,7 @@ class Ui_MainWindow(object):
             curr_pos = answ.decode('utf-8').split()
             print('Current position: ',curr_pos)
             # Update LDC display with current position
-            #self.lcdNumber.display(
-            
-        return int(curr_pos[1])+201240
+            self.lcdNumber.display(int(curr_pos[1])+zero_pos)
 
 
     def get_absolute_to_move(self, MainWindow):
@@ -217,7 +216,7 @@ class Ui_MainWindow(object):
             home_pos = answ.decode('utf-8').split()[1]
             print(home_pos)
             # Update LDC display with current position
-            self.lcdNumber.display(int(curr_pos[1])+201240)
+            self.lcdNumber.display(int(curr_pos[1])+zero_pos)
         
 
 
@@ -231,4 +230,5 @@ if __name__ == "__main__":
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
+    ui.get_position_at_startup(MainWindow)
     sys.exit(app.exec_())
