@@ -45,6 +45,7 @@ class Ui_MainWindow(object):
         self.lcdNumber = QtWidgets.QLCDNumber(8,self.centralwidget)
         self.lcdNumber.setGeometry(QtCore.QRect(470, 90, 250, 41))
         self.lcdNumber.setObjectName("lcdNumber")
+        self.lcdNumber.display(get_position_at_startup())
         self.label_5 = QtWidgets.QLabel(self.centralwidget)
         self.label_5.setGeometry(QtCore.QRect(20, 10, 301, 41))
         font = QtGui.QFont()
@@ -152,13 +153,27 @@ class Ui_MainWindow(object):
         self.pushButton_2.setText(_translate("MainWindow", "Horizontal"))
         self.pushButton_9.clicked.connect(self.move_to)
 
-    def get_position(self, MainWindow):
+    def get_position_at_startup(self, MainWindow):
         """
-        Query current position
+        Query current position when program is started
         """
-        #ser.write(b'0PA?'+b'\r\n')
-        #answ = ser.readline()
-        #print('Current position read')
+        # Initiate connection
+        with serial.Serial('COM5') as ser:
+            ser.baudrate = 19200
+            ser.bytesize = 8
+            ser.parity = 'N'
+            ser.xonxoff = 1
+            ser.rtscts = 1
+            ser.timeout = 5
+            
+            # Ask for current position
+            ser.write(b'0PA?'+b'\r\n')
+            answ = ser.readline()
+            curr_pos = answ.decode('utf-8').split()
+            print('Current position: ',curr_pos)
+            # Update LDC display with current position
+            #self.lcdNumber.display(
+            return int(curr_pos[1])+201240
 
         return answ
 
