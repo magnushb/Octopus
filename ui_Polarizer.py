@@ -183,9 +183,15 @@ class Ui_MainWindow(object):
                 to_move = '0'
             #to_move = to_move.astype(np.int)
             # Move
-            ser.write(b'0PA{}'.format(to_move)+b'\r\n')
+            pos_string = bytes('0PA{}'.format(to_move),'utf-8')
+            ser.write(pos_string+b'\r\n')
             answ = ser.readline()
+            #print('pos:',answ)
             # Get new position
+            # Ask for current position
+            ser.write(b'0PA?'+b'\r\n')
+            answ = ser.readline()
+            print('Current position: ',answ)
         
 
 
