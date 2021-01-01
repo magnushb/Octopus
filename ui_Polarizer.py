@@ -42,8 +42,8 @@ class Ui_MainWindow(object):
         font.setPointSize(12)
         self.label_4.setFont(font)
         self.label_4.setObjectName("label_4")
-        self.lcdNumber = QtWidgets.QLCDNumber(self.centralwidget)
-        self.lcdNumber.setGeometry(QtCore.QRect(470, 90, 151, 41))
+        self.lcdNumber = QtWidgets.QLCDNumber(8,self.centralwidget)
+        self.lcdNumber.setGeometry(QtCore.QRect(470, 90, 250, 41))
         self.lcdNumber.setObjectName("lcdNumber")
         self.label_5 = QtWidgets.QLabel(self.centralwidget)
         self.label_5.setGeometry(QtCore.QRect(20, 10, 301, 41))
@@ -196,8 +196,9 @@ class Ui_MainWindow(object):
             answ = ser.readline()
             curr_pos = answ.decode('utf-8').split()
             print('Current position: ',curr_pos)
+            print(int(curr_pos[1]))
             # Update LDC display with current position
-            self.lcdNumber.display(int(curr_pos[1]))
+            self.lcdNumber.display(curr_pos[1])
         
 
 
