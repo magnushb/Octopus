@@ -10,6 +10,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import serial
+import numpy as np
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -149,21 +150,42 @@ class Ui_MainWindow(object):
         self.pushButton_9.setText(_translate("MainWindow", "Move"))
         self.pushButton.setText(_translate("MainWindow", "Vertical"))
         self.pushButton_2.setText(_translate("MainWindow", "Horizontal"))
-        self.pushButton_9.clicked.connect(self.get_position)
+        self.pushButton_9.clicked.connect(self.move_to)
 
     def get_position():
         """
         Query current position
         """
         return 1038
+
+    def get_absolute_to_move(self, MainWindow):
+        """
+        Get value for absolute movement from user input field.
+        """
+        #self.lineEdit_4.text()
     
-    def move_to():
+    def move_to(self, MainWindow):
         """
         Send command to move to absolute position
         """
-        # Move
-        
-        # Get new position
+        # Initiate connection
+        with serial.Serial('COM5') as ser:
+            ser.baudrate = 19200
+            ser.bytesize = 8
+            ser.parity = 'N'
+            ser.xonxoff = 1
+            ser.rtscts = 1
+            ser.timeout = 5
+            
+            # Get how much to move
+            to_move = self.lineEdit_4.text()
+            if not to_move:
+                to_move = '0'
+            #to_move = to_move.astype(np.int)
+            # Move
+            ser.write(b'0PA{}'.format(to_move)+b'\r\n')
+            answ = ser.readline()
+            # Get new position
         
 
 
