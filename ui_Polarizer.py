@@ -154,9 +154,10 @@ class Ui_MainWindow(object):
         self.pushButton_2.setText(_translate("MainWindow", "Horizontal"))
         self.pushButton_9.clicked.connect(self.move_to)
 
-    def get_position_at_startup(self, MainWindow):
+    def do_at_startup(self, MainWindow):
         """
-        Query current position when program is started
+        Query current position when program is started, 
+        and add preset relative step sizes.
         """
         # Initiate connection
         with serial.Serial('COM5') as ser:
@@ -174,6 +175,11 @@ class Ui_MainWindow(object):
             print('Current position: ',curr_pos)
             # Update LDC display with current position
             self.lcdNumber.display(int(curr_pos[1])+zero_pos)
+            # Set values for relative movements
+            self.lineEdit.setText("1")
+            self.lineEdit_2.setText("5")
+            self.lineEdit_3.setText("10")
+
 
 
     def get_absolute_to_move(self, MainWindow):
@@ -230,5 +236,5 @@ if __name__ == "__main__":
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
-    ui.get_position_at_startup(MainWindow)
+    ui.do_at_startup(MainWindow)
     sys.exit(app.exec_())
