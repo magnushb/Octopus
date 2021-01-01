@@ -197,7 +197,7 @@ class Ui_MainWindow(object):
             curr_pos = answ.decode('utf-8').split()
             print('Current position: ',curr_pos)
             # Update LDC display with current position
-            #self.lcdNumber.display(int(curr_pos.decode('utf-8')))
+            self.lcdNumber.display(int(curr_pos[1]))
         
 
 
