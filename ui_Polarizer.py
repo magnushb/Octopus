@@ -186,11 +186,11 @@ class Ui_MainWindow(object):
             # Update LDC display with current position
             self.lcdNumber.display(int(curr_pos[1])+zero_pos)
             # Set values for relative movements
-            self.lineEdit.setText("1")
+            self.lineEdit.setText("10")
             self.lineEdit.setAlignment(QtCore.Qt.AlignCenter)
-            self.lineEdit_2.setText("5")
+            self.lineEdit_2.setText("100")
             self.lineEdit_2.setAlignment(QtCore.Qt.AlignCenter)
-            self.lineEdit_3.setText("10")
+            self.lineEdit_3.setText("1000")
             self.lineEdit_3.setAlignment(QtCore.Qt.AlignCenter)
 
 
